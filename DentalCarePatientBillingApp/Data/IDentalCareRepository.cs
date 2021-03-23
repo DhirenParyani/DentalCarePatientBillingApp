@@ -13,8 +13,8 @@ namespace DentalCarePatientBillingApp.Data
         void InsertVisit(Visit visit);
         void InsertPatient(Patient patient);
 
-        Dictionary<int, Patient> GetAccountNumberPatientMap();
-        Dictionary<int, Visit> GetVisitNumberVisitMap();
+        Dictionary<int, Patient> GetPatientsData();
+        Dictionary<int, Visit> GetVisitsData();
         Dictionary<int, PatientBillData> GetBills();
         int GetBillsCount();
         int GetVisitsCount();

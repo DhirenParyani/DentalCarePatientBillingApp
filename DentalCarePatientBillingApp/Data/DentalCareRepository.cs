@@ -19,11 +19,7 @@ namespace DentalCarePatientBillingApp.Data
        
         public DentalCareRepository()
         {
-            accountNumberPatientBillDataMap = new Dictionary<int, List<PatientBillData>>();
-            accountNumberPatientMap = new Dictionary<int, Patient>();
-            visitNumberVisitMap = new Dictionary<int, Visit>();
-            billNumberBillDataMap = new Dictionary<int, PatientBillData>();
-            visitNumberBillDataMap = new Dictionary<int, List<PatientBillData>>();
+           
             InitializeRepository();
         }
 
@@ -65,11 +61,11 @@ namespace DentalCarePatientBillingApp.Data
 
         }
 
-        public Dictionary<int, Patient> GetAccountNumberPatientMap()
+        public Dictionary<int, Patient> GetPatientsData()
         {
             return accountNumberPatientMap;
         }
-        public Dictionary<int, Visit> GetVisitNumberVisitMap()
+        public Dictionary<int, Visit> GetVisitsData()
         {
             return visitNumberVisitMap;
         }
@@ -95,7 +91,7 @@ namespace DentalCarePatientBillingApp.Data
 
         public PatientSummary GetBillsSummaryForAPatient(int accountNumber)
         {
-            Patient patient = GetAccountNumberPatientMap()[accountNumber];
+            Patient patient = GetPatientsData()[accountNumber];
             List<PatientBillData> patientBills = GetAccountNumberPatientBillDataMap()[accountNumber];
             PatientSummary patientSummary = new PatientSummary();
             patientSummary.AccountNumber = patient.AccountNumber;
@@ -127,9 +123,9 @@ namespace DentalCarePatientBillingApp.Data
             List<PatientBillData> patientBillsDataList = new List<PatientBillData>();
            
             int billNumberCount = GetBillsCount();
-            foreach (int visitNumber in GetVisitNumberVisitMap().Keys)
+            foreach (int visitNumber in GetVisitsData().Keys)
             {
-                Visit visit = GetVisitNumberVisitMap()[visitNumber];
+                Visit visit = GetVisitsData()[visitNumber];
                 DateTime dateOfService = DateTime.Parse(visit.DateOfService);
                 int daysDifference = (System.DateTime.Now.Date - dateOfService.Date).Days;
                 int numberOfDaysInCurrentMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
@@ -183,7 +179,7 @@ namespace DentalCarePatientBillingApp.Data
 
         public List<SystemGeneratedBill> GetBillsForAPatient(int accountNumber)
         {
-            Patient patient = GetAccountNumberPatientMap()[accountNumber];
+            Patient patient = GetPatientsData()[accountNumber];
             List<PatientBillData> patientBills = GetAccountNumberPatientBillDataMap()[accountNumber];
             List<SystemGeneratedBill> systemGeneratedBillsList = new List<SystemGeneratedBill>();
            
@@ -248,10 +244,15 @@ namespace DentalCarePatientBillingApp.Data
 
         public void InitializeRepository()
         {
+            accountNumberPatientBillDataMap = new Dictionary<int, List<PatientBillData>>();
+            accountNumberPatientMap = new Dictionary<int, Patient>();
+            visitNumberVisitMap = new Dictionary<int, Visit>();
+            billNumberBillDataMap = new Dictionary<int, PatientBillData>();
+            visitNumberBillDataMap = new Dictionary<int, List<PatientBillData>>();
             new CSVService().CreateFilesIfTheyDontExist();
-            accountNumberPatientBillDataMap =new CSVService().MapCSVFileToPatientBillModelWithAccountNumber();
-            billNumberBillDataMap= new CSVService().MapCSVFileToPatientBillModelWithBillNumber();
-            visitNumberBillDataMap= new CSVService().MapCSVFileToPatientBillModelWithVisitNumber();
+            new CSVService().MapCSVFileToPatientBillModel(accountNumberPatientBillDataMap, billNumberBillDataMap, visitNumberBillDataMap);
+            //billNumberBillDataMap= new CSVService().MapCSVFileToPatientBillModelWithBillNumber();
+            //visitNumberBillDataMap= new CSVService().MapCSVFileToPatientBillModelWithVisitNumber();
             accountNumberPatientMap = new CSVService().MapCSVFileToPatientModelWithAccountNumber();
             visitNumberVisitMap= new CSVService().MapCSVFileToVisitModelWithVisitNumber();
         }

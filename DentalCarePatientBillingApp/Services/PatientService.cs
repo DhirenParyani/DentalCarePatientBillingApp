@@ -18,7 +18,7 @@ namespace DentalCarePatientBillingApp.Services
 
         public bool RegisterPatient(Patient patient)
         {
-            if (dentalCareRepository.GetAccountNumberPatientMap().ContainsKey(patient.AccountNumber))
+            if (dentalCareRepository.GetPatientsData().ContainsKey(patient.AccountNumber))
                 return false;
             dentalCareRepository.InsertPatient(patient);
             return true;

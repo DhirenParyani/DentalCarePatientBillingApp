@@ -17,7 +17,7 @@ namespace DentalCarePatientBillingApp.Services
 
         public bool RegisterVisit(Visit visit)
         {
-            if (dentalCareRepository.GetVisitNumberVisitMap().ContainsKey(visit.VisitNumber))
+            if (dentalCareRepository.GetVisitsData().ContainsKey(visit.VisitNumber))
                 return false;
             dentalCareRepository.InsertVisit(visit);
             return true;

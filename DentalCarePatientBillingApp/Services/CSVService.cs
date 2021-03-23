@@ -16,9 +16,9 @@ namespace DentalCarePatientBillingApp.Utility
     public class CSVService
     {
         
-        public Dictionary<int, List<PatientBillData>> MapCSVFileToPatientBillModelWithAccountNumber()
+        public void MapCSVFileToPatientBillModel(Dictionary<int, List<PatientBillData>> AccountNumberPatientBillDataMap, Dictionary<int, PatientBillData> BillNumberPatientBillDataMap, Dictionary<int, List<PatientBillData>> VisitNumberPatientBillDataMap)
         {
-            var AccountNumberPatientBillDataMap = new Dictionary<int, List<PatientBillData>>(); 
+            //var AccountNumberPatientBillDataMap = new Dictionary<int, List<PatientBillData>>(); 
             try
             {
                 using (var reader = new StreamReader(Constants.Constants.BillsCSVPath))
@@ -35,6 +35,18 @@ namespace DentalCarePatientBillingApp.Utility
                             AccountNumberPatientBillDataMap.Add(accountNumber, new List<PatientBillData>());
                         AccountNumberPatientBillDataMap[accountNumber].Add(csv.GetRecord<PatientBillData>());
 
+                        int billNumber = Int32.Parse(csv.GetField("BillNumber"));
+                        /*if (!BillNumberPatientBillDataMap.ContainsKey(billNumber))
+                            BillNumberPatientBillDataMap.Add(accountNumber, new List<PatientBillData>());*/
+
+                        BillNumberPatientBillDataMap.Add(billNumber, csv.GetRecord<PatientBillData>());
+
+                        int visitNumber = Int32.Parse(csv.GetField("VisitNumber"));
+                        if (!VisitNumberPatientBillDataMap.ContainsKey(visitNumber))
+                            VisitNumberPatientBillDataMap.Add(visitNumber, new List<PatientBillData>());
+                        VisitNumberPatientBillDataMap[visitNumber].Add(csv.GetRecord<PatientBillData>());
+
+
                     }
 
                 }
@@ -43,7 +55,7 @@ namespace DentalCarePatientBillingApp.Utility
             {
                 throw new Exception(e.Message);
             }
-            return AccountNumberPatientBillDataMap;
+            
         }
         public Dictionary<int, PatientBillData> MapCSVFileToPatientBillModelWithBillNumber()
         {

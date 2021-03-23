@@ -16,12 +16,12 @@ namespace DentalCarePatientBillingApp.Controllers
     public class PatientBillingSystemController : ControllerBase
     {
        
-        private readonly IDentalCareRepository _dentalCareRepository;
+        private readonly IDentalCareRepository dentalCareRepository;
         private IBillingService billingService;
         public PatientBillingSystemController(IDentalCareRepository repository)
         {
-            _dentalCareRepository = repository;
-            billingService = new BillingService(_dentalCareRepository); 
+            dentalCareRepository = repository;
+            billingService = new BillingService(dentalCareRepository); 
         }
 
         [HttpGet]
@@ -36,7 +36,7 @@ namespace DentalCarePatientBillingApp.Controllers
         [HttpGet("{accountNumber}")]
         public ActionResult<IEnumerable<List<SystemGeneratedBill>>> GetBillsByAccountNumber(int accountNumber)
         {
-            if (!_dentalCareRepository.GetAccountNumberPatientMap().ContainsKey(accountNumber))
+            if (!dentalCareRepository.GetPatientsData().ContainsKey(accountNumber))
                 return BadRequest("Account Number doesn't exist");
               
             List<SystemGeneratedBill> bills = billingService.GetBillsByAccountNumber(accountNumber);
@@ -48,7 +48,7 @@ namespace DentalCarePatientBillingApp.Controllers
         [HttpPut("{billNumber}")]
         public ActionResult RecordAPaymentAganistBillNumber(int billNumber)
         {
-            if (_dentalCareRepository.GetBills().ContainsKey(billNumber))
+            if (dentalCareRepository.GetBills().ContainsKey(billNumber))
             {
                 billingService.RecordAPayment(billNumber);
                 return Ok("Payment recorded aganist the given bill number");
