@@ -100,7 +100,7 @@ namespace DentalCarePatientBillingApp.Data
             List<int> distinctVisits = new List<int>();
             foreach (PatientBillData billData in patientBills)
             {
-                //This Calculation should be for distinct visits
+                //Since for a single visit, the amount charged would be same so we are only checking the distinct visits and adding amount charged.
                 DateTime BillDueDate = DateTime.Parse(billData.DueDate);
                 int DateDifference = (System.DateTime.Now.Date - BillDueDate.Date).Days;
                
@@ -131,7 +131,7 @@ namespace DentalCarePatientBillingApp.Data
                 int numberOfDaysInCurrentMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
                 if(!visitNumberBillDataMap.ContainsKey(visit.VisitNumber))
                 {
-                    //||  daysDifference <= numberOfDaysInCurrentMonth
+                    //All visitNumber that are yet not present in VisitNo and Billdata Map are considered as New visits.
                     billNumberCount++;
                     PatientBillData patientBillData = new PatientBillData();
                     patientBillData.VisitNumber = visit.VisitNumber;
@@ -155,6 +155,8 @@ namespace DentalCarePatientBillingApp.Data
             int billNumberCount = GetBillsCount();
             foreach (PatientBillData billData in GetBills().Values)
             {
+                //All Bills in Bill.csv are considered as Unpaid for which IsSettled flag is false
+                //we might have multiple bills that are unpaid for the same visit so we only count is once.
                 if (!distinctVisits.Contains(billData.VisitNumber) && !billData.IsSettled)
                 {
                     billNumberCount++;
@@ -251,8 +253,6 @@ namespace DentalCarePatientBillingApp.Data
             visitNumberBillDataMap = new Dictionary<int, List<PatientBillData>>();
             new CSVService().CreateFilesIfTheyDontExist();
             new CSVService().MapCSVFileToPatientBillModel(accountNumberPatientBillDataMap, billNumberBillDataMap, visitNumberBillDataMap);
-            //billNumberBillDataMap= new CSVService().MapCSVFileToPatientBillModelWithBillNumber();
-            //visitNumberBillDataMap= new CSVService().MapCSVFileToPatientBillModelWithVisitNumber();
             accountNumberPatientMap = new CSVService().MapCSVFileToPatientModelWithAccountNumber();
             visitNumberVisitMap= new CSVService().MapCSVFileToVisitModelWithVisitNumber();
         }
