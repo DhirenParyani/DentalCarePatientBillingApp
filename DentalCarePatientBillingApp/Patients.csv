@@ -1,0 +1,3 @@
+AccountNumber,PatientName,PatientAddress,IsInsured,InsuranceName,InsuranceAddress
+1,Dhiren Paryani,Montezuma Rd San Diego,TRUE,JCB,Connecticut
+2,Matt Black,Wills Tower Chicago,FALSE,NA,NA

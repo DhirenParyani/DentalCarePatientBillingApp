@@ -8,6 +8,8 @@ using DentalCarePatientBillingApp.Models;
 using Microsoft.AspNetCore.Cors;
 using DentalCarePatientBillingApp.Services;
 
+//CSV Paths can be edited under Constants: currently set to Project's root folder
+
 namespace DentalCarePatientBillingApp.Controllers
 {
     [EnableCors("MyPolicy")]

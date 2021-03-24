@@ -203,7 +203,7 @@ namespace DentalCarePatientBillingApp.Data
                         systemGeneratedBill.BillingName = patient.PatientName;
                         systemGeneratedBill.BillingAddress = patient.PatientAddress;
                     }
-                    systemGeneratedBill.DaysPastDue = DateDifference;
+                    systemGeneratedBill.DaysPastDue = (DateDifference<=0)?0:DateDifference;
                     systemGeneratedBill.InvoiceDate = DateTime.Parse(billData.InvoiceDate).ToString("MMM dd yyyy");
                     systemGeneratedBill.BillAmount = billData.AmountDue;
 

@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+//CSV Paths can be edited under Constants: currently set to Project's root folder
+
 namespace DentalCarePatientBillingApp.Controllers
 {
     [EnableCors("MyPolicy")]

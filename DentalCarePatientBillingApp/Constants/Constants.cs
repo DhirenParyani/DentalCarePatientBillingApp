@@ -7,8 +7,9 @@ namespace DentalCarePatientBillingApp.Constants
 {
     class Constants
     {
-        public static  string PatientsCSVPath = "D:\\Patients.csv";
-        public static  string VisitsCSVPath = "D:\\Visits.csv";
-        public static  string BillsCSVPath = "D:\\Bills.csv";
+        //CSV Paths can be edited under Constants: currently set to Project's root folder
+        public static  string PatientsCSVPath = "Patients.csv";
+        public static  string VisitsCSVPath = "Visits.csv";
+        public static  string BillsCSVPath = "Bills.csv";
     }
 }

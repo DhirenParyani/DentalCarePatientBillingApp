@@ -15,10 +15,10 @@ namespace DentalCarePatientBillingApp.Utility
 {
     public class CSVService
     {
-        
+
         public void MapCSVFileToPatientBillModel(Dictionary<int, List<PatientBillData>> AccountNumberPatientBillDataMap, Dictionary<int, PatientBillData> BillNumberPatientBillDataMap, Dictionary<int, List<PatientBillData>> VisitNumberPatientBillDataMap)
         {
-            //var AccountNumberPatientBillDataMap = new Dictionary<int, List<PatientBillData>>(); 
+
             try
             {
                 using (var reader = new StreamReader(Constants.Constants.BillsCSVPath))
@@ -36,9 +36,6 @@ namespace DentalCarePatientBillingApp.Utility
                         AccountNumberPatientBillDataMap[accountNumber].Add(csv.GetRecord<PatientBillData>());
 
                         int billNumber = Int32.Parse(csv.GetField("BillNumber"));
-                        /*if (!BillNumberPatientBillDataMap.ContainsKey(billNumber))
-                            BillNumberPatientBillDataMap.Add(accountNumber, new List<PatientBillData>());*/
-
                         BillNumberPatientBillDataMap.Add(billNumber, csv.GetRecord<PatientBillData>());
 
                         int visitNumber = Int32.Parse(csv.GetField("VisitNumber"));
@@ -55,68 +52,9 @@ namespace DentalCarePatientBillingApp.Utility
             {
                 throw new Exception(e.Message);
             }
-            
-        }
-        public Dictionary<int, PatientBillData> MapCSVFileToPatientBillModelWithBillNumber()
-        {
-            var BillNumberPatientBillDataMap = new Dictionary<int, PatientBillData>();
-           try
-            {
-                using (var reader = new StreamReader(Constants.Constants.BillsCSVPath))
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                {
 
-
-                    csv.Read();
-                    csv.ReadHeader();
-                    while (csv.Read())
-                    {
-                        int billNumber = Int32.Parse(csv.GetField("BillNumber"));
-                        /*if (!BillNumberPatientBillDataMap.ContainsKey(billNumber))
-                            BillNumberPatientBillDataMap.Add(accountNumber, new List<PatientBillData>());*/
-
-                        BillNumberPatientBillDataMap.Add(billNumber,csv.GetRecord<PatientBillData>());
-
-                    }
-
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return BillNumberPatientBillDataMap;
         }
 
-        public Dictionary<int, List<PatientBillData>> MapCSVFileToPatientBillModelWithVisitNumber()
-        {
-            var VisitNumberPatientBillDataMap = new Dictionary<int, List<PatientBillData>>();
-            try
-            {
-                using (var reader = new StreamReader(Constants.Constants.BillsCSVPath))
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                {
-
-
-                    csv.Read();
-                    csv.ReadHeader();
-                    while (csv.Read())
-                    {
-                        int visitNumber = Int32.Parse(csv.GetField("VisitNumber"));
-                        if (!VisitNumberPatientBillDataMap.ContainsKey(visitNumber))
-                            VisitNumberPatientBillDataMap.Add(visitNumber, new List<PatientBillData>());
-                        VisitNumberPatientBillDataMap[visitNumber].Add(csv.GetRecord<PatientBillData>());
-
-                    }
-
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return VisitNumberPatientBillDataMap;
-        }
         public Dictionary<int, Patient> MapCSVFileToPatientModelWithAccountNumber()
         {
             var AccountNumberPatientMap = new Dictionary<int, Patient>();
@@ -131,10 +69,10 @@ namespace DentalCarePatientBillingApp.Utility
                     {
                         int accountNumber = Int32.Parse(csv.GetField("AccountNumber"));
                         AccountNumberPatientMap.Add(accountNumber, csv.GetRecord<Patient>());
-                        
+
                     }
-                   
-                    
+
+
                 }
             }
             catch (Exception e)
@@ -199,23 +137,23 @@ namespace DentalCarePatientBillingApp.Utility
         public void AppendBillsDataToCSV(PatientBillData patientBillData)
         {
             CreateFilesIfTheyDontExist();
-            string patientBillDataString = patientBillData.BillNumber + "," + patientBillData.VisitNumber + "," + patientBillData.AccountNumber + "," + patientBillData.InvoiceDate + "," + patientBillData.DueDate + "," + patientBillData.AmountDue + "," + patientBillData.IsSettled+ Environment.NewLine;
+            string patientBillDataString = patientBillData.BillNumber + "," + patientBillData.VisitNumber + "," + patientBillData.AccountNumber + "," + patientBillData.InvoiceDate + "," + patientBillData.DueDate + "," + patientBillData.AmountDue + "," + patientBillData.IsSettled + Environment.NewLine;
             File.AppendAllText(Constants.Constants.BillsCSVPath, patientBillDataString);
         }
         public void AppendPatientsDataToCSV(Patient patient)
         {
             CreateFilesIfTheyDontExist();
-            string patientDataString = patient.AccountNumber + "," + patient.PatientName + "," + patient.PatientAddress + "," + patient.IsInsured + "," + patient.InsuranceName + "," + patient.InsuranceAddress+Environment.NewLine;
+            string patientDataString = patient.AccountNumber + "," + patient.PatientName + "," + patient.PatientAddress + "," + patient.IsInsured + "," + patient.InsuranceName + "," + patient.InsuranceAddress + Environment.NewLine;
             File.AppendAllText(Constants.Constants.PatientsCSVPath, patientDataString);
         }
 
         public void AppendVisitsDataToCSV(Visit visit)
         {
             CreateFilesIfTheyDontExist();
-            string visitDataString = visit.VisitNumber + "," + visit.AccountNumber + "," + visit.DateOfService + "," + visit.AmountCharged+ Environment.NewLine;
+            string visitDataString = visit.VisitNumber + "," + visit.AccountNumber + "," + visit.DateOfService + "," + visit.AmountCharged + Environment.NewLine;
             File.AppendAllText(Constants.Constants.VisitsCSVPath, visitDataString);
         }
-        
+
         public void UpdateBillSettlementInCSV(PatientBillData billData)
         {
             int visitNumber = billData.VisitNumber;
