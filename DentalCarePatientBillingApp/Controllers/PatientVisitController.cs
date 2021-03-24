@@ -29,9 +29,9 @@ namespace DentalCarePatientBillingApp.Controllers
         public ActionResult<Visit> RegisterVisit(Visit visit)
         {
             if (visitService.RegisterVisit(visit))
-                return Ok("Your Visit was unsuccessful");
+                return Ok("Your Dentalcare Visit was successful");
 
-            return BadRequest("Your Dentalcare Visit was successfully");
+            return BadRequest("Your Dentalcare Visit was unsuccessful");
         }
     }
 }

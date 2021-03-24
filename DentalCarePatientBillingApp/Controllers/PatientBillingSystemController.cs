@@ -53,7 +53,7 @@ namespace DentalCarePatientBillingApp.Controllers
             if (dentalCareRepository.GetBills().ContainsKey(billNumber))
             {
                 billingService.RecordAPayment(billNumber);
-                return Ok("Payment recorded aganist the given bill number");
+                return Ok("Payment was recorded aganist the given bill number");
             }
                 
 
