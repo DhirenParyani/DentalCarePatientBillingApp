@@ -26,15 +26,15 @@ namespace DentalCarePatientBillingApp.Tests
         {
             IBillingService billingService = new BillingService(dentalCareRepository);
 
-            /*//While testing by default creates CSV's in Your Project Path: DentalCarePatientBillingApp\DentalCarePatientBillingApp.Tests\bin\Debug\netcoreapp3.1
+            //While testing by default creates CSV's in Your Project Path: DentalCarePatientBillingApp\DentalCarePatientBillingApp.Tests\bin\Debug\netcoreapp3.1
             //CSV Paths can be edited under Constants: currently set to Project's root folder like D://Patients.csv
 
-            
 
-            //1. Patient is registered in dental care
+
+            //1. Patient is registered in dental care (change the Patient Account Number for Multiple Runs)
             Patient patient1 = new Patient();
-            patient1.AccountNumber = 1;
-            patient1.PatientName = "Dhiren Paryani";
+            patient1.AccountNumber = 3;
+            patient1.PatientName = "Sunny Paryani";
             patient1.PatientAddress = "6560 Montezuma Road";
             patient1.IsInsured = true;
             patient1.InsuranceName = "JCB";
@@ -46,21 +46,21 @@ namespace DentalCarePatientBillingApp.Tests
 
             Assert.IsType<OkObjectResult>(patientCreatedMessage.Result);
 
-            //2. Patient makes his visit to dental care
+            //2. Patient makes his visit to dental care (change the Visiting Number for Multiple Runs)
             Visit visit1 = new Visit();
-            visit1.VisitNumber = 1;
-            visit1.AccountNumber = 1;
+            visit1.VisitNumber = 5;
+            visit1.AccountNumber = 3;  //Patients Account Number: make sure this is as above
             visit1.DateOfService = "03/22/2020";
             visit1.AmountCharged = 123.5;
             var visitMessage = patientVisit.RegisterVisit(visit1);
             Console.WriteLine(visitMessage.Value);
-            Assert.IsType<OkObjectResult>(visitMessage.Result);*/
+            Assert.IsType<OkObjectResult>(visitMessage.Result);
 
 
             //3. System generates a Bill (typically at the end of the month): This has been called as a cron job in BillGenerationBackgroundService.cs
             billingService.GenerateBillsForTheMonth();
 
-            /*//4. Patient recieves a bill at the end of the month: This is used by the UI portal
+            //4. Patient recieves a bill at the end of the month: This is used by the UI portal
             var billsResult = patientBillingController.GetBillsByAccountNumber(patient1.AccountNumber).Result as ObjectResult;
            
             List<SystemGeneratedBill> bills = (List<SystemGeneratedBill>) billsResult.Value;
@@ -77,7 +77,7 @@ namespace DentalCarePatientBillingApp.Tests
             billsResult = patientBillingController.GetBillsByAccountNumber(patient1.AccountNumber).Result as ObjectResult;
             bills = (List<SystemGeneratedBill>)billsResult.Value;
             var billsCountAgain = bills.ToList().Count;
-            Assert.Equal(0, billsCountAgain);*/
+            Assert.Equal(0, billsCountAgain);
         }
       
        
